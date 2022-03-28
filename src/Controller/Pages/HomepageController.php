@@ -12,7 +12,7 @@ class HomepageController extends AbstractController
     #[Route('/',name:'app_homepage')]
     public function homepage(): Response
     {
-        return $this->render('Pages/homepage.html.twig');
+        return $this->render('pages/homepage.html.twig');
     }
 }
 
