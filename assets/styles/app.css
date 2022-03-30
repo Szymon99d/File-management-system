@@ -3,3 +3,12 @@
     height: 800px;
     text-align: center;
 }
+.form-block{
+    background-color: #ffffffb6;
+    border: 2px solid rgba(0, 0, 0, 0.575);
+    border-radius: 5px;
+}
+.form-control{
+    border-color: black;
+    z-index: 1;
+}
