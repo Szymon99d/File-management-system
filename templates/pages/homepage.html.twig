@@ -15,7 +15,12 @@ Fms homepage
                 <div class="form-block px-0 col-sm-12 col-md-8 col-lg-6 col-xl-5">
                     <h4 class="bg-dark text-white p-3">Create an account now</h4>
                     <div class="p-3">
-                    {{ form(form) }}
+                    {{ form_start(form) }}
+                        {{ form_row(form.email)}}
+                        {{ form_row(form.password)}}
+                        {{ form_row(form.username)}}
+                        {{ form_row(form.submit)}}
+                    {{ form_end(form) }}
                     </div>
                 </div>
             </div>
