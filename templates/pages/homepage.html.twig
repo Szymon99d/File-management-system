@@ -9,6 +9,11 @@ Fms homepage
 
     <div class="container py-2">
 
+        {% for message in app.flashes('notice') %}
+            <div class="alert alert-warning w-100">
+                {{ message }}
+            </div>
+        {% endfor %}
         <h1 class="p-4">Upload files, share with others, keep them safe.</h1>
         <div class="container w-75">
             <div class="row justify-content-center">
