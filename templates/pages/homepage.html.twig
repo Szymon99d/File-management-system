@@ -12,7 +12,7 @@ Fms homepage
         <h1 class="p-4">Upload files, share with others, keep them safe.</h1>
         <div class="container w-75">
             <div class="row justify-content-center">
-                <div class="form-block px-0 col-sm-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="form-block px-0 pb-2 col-sm-12 col-md-8 col-lg-6 col-xl-5">
                     <h4 class="bg-dark text-white p-3">Create an account now</h4>
                     <div class="p-3">
                     {{ form_start(form) }}
@@ -22,6 +22,8 @@ Fms homepage
                         {{ form_row(form.submit)}}
                     {{ form_end(form) }}
                     </div>
+                    <p class="d-inline">Already have an account?</p>
+                    <a href="{{path('app_login')}}" class="d-inline">Sign in</a>
                 </div>
             </div>
         </div>
