@@ -2,11 +2,33 @@
 
 {% block title %}
 Your file panel
-{% %}
+{% endblock %}
 
 {% block content %}
 
+    <div class="content container-fluid">
 
+        <div class="row h-100">
+
+            <div class="col-sm-3 p-3" style="background-color: #a6c9ff;">
+                    <h4>Welcome {{app.user.email}}!</h4>
+                    <hr size="2">
+                    <h5>Recent uploads:</h5>
+                    <ul>
+                        <li>Image.png</li>
+                        <li>Text.txt</li>
+                        <li>Test.pdf</li>
+                    </ul>
+            </div>
+
+            <div class="col-sm-9 bg-light text-black">
+
+            </div>
+
+        </div>
+
+
+    </div>
 
 
 {% endblock %}
