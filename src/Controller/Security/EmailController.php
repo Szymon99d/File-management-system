@@ -2,6 +2,7 @@
 
 namespace App\Controller\Security;
 
+use App\Services\ConfirmEmailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,8 +29,19 @@ class EmailController extends AbstractController
         $em->persist($user);
         $em->flush();
 
-        $this->addFlash('success', 'Your e-mail address has been verified.');
+        $this->addFlash('success', 'Your e-mail address has been verified!');
 
+        return $this->redirectToRoute('app_homepage');
+    }
+    #[Route('/resend-confirmation',name:'app_resend_confirmation')]
+    public function resendConfirmation(ConfirmEmailService $ces): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        if(!$user->getIsVerified())
+            return $this->redirectToRoute('app_homepage');
+        $ces->confirmEmail($user);
+        $this->addFlash('success',"Email confirmation has been successfully sent!");
         return $this->redirectToRoute('app_homepage');
     }
 }
