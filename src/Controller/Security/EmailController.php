@@ -22,7 +22,7 @@ class EmailController extends AbstractController
         } catch (VerifyEmailExceptionInterface $e) {
             $this->addFlash('verify_email_error', $e->getReason());
 
-            return $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('app_homepage');
         }
         $user->setIsVerified(true);
         $em->persist($user);
