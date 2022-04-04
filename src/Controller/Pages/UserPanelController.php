@@ -15,7 +15,7 @@ class UserPanelController extends AbstractController
         $user = $this->getUser();
         if(!$user->getIsVerified())
         {
-            $this->addFlash('notice','Before you access your file panel, please confirm your email address.');
+            $this->addFlash('EmailConfWarn','Before you access your file panel, please confirm your email address.');
             return $this->redirectToRoute('app_homepage');
         }
             

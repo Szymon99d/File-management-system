@@ -9,8 +9,14 @@ Fms homepage
 
     <div class="container py-2">
 
-        {% for message in app.flashes('notice') %}
+        {% for message in app.flashes('EmailConfWarn') %}
             <div class="alert alert-warning w-100">
+                {{ message }}
+                <a href="{{path('app_resend_confirmation')}}">Click here to resend email confirmation</a>
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success w-100">
                 {{ message }}
             </div>
         {% endfor %}
