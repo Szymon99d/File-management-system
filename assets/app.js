@@ -12,3 +12,24 @@ import './styles/app.css';
 import './bootstrap';
 import $ from 'jquery';
 
+$(function(){
+    $("#fileUpload").on('change',function(){
+        var uploadForm = $("#uploadForm");
+        var formData = new FormData(uploadForm[0]);
+        $.ajax({
+            url: "/upload-file",
+            method: "post",
+            data: formData,
+            processData: false,
+            contentType: false,
+            async: true,
+            success: function(resp)
+            {
+                console.log(resp);
+            },
+            error: function(e){
+                console.log(e);
+            }
+        });
+    });
+});
