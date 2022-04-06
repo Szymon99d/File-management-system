@@ -22,13 +22,22 @@ Your file panel
             </div>
 
             <div class="col-sm-9 bg-light text-black">
-                <div style="height: 150px; width: 150px;">
-                    <form method="post" id="uploadForm">
-                        <label for="fileUpload" class="btn btn-primary">
-                            Upload file
-                        </label>
-                        <input id="fileUpload" type="file" name="fileUpload"/>
-                    </form>
+                <div class="d-flex flex-row-start">
+                    <div class="p-4">
+                        <form method="post" id="uploadForm">
+                            <label for="fileUpload" class="btn btn-primary">
+                                Upload file
+                            </label>
+                            <input id="fileUpload" type="file" name="fileUpload"/>
+                        </form>
+                    </div>
+                    {% for file in files %}
+                        <div class="px-2">
+                            <i class="bi bi-file-text"></i>
+                            <p>{{file.name}}.{{file.extension}}</p>
+                            <p>Size: {{file.size}}Kb</p>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
 

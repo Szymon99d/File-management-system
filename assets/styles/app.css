@@ -1,3 +1,4 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
 .content{
     background-color: #88a8db;
     height: 800px;
@@ -20,4 +21,7 @@ input[type="file"]{
     display: inline-block;
     padding: 6px 12px;
     cursor: pointer;
+}
+.bi-file-text{
+    font-size: 4em;
 }
