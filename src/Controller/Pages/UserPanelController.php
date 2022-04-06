@@ -2,6 +2,7 @@
 
 namespace App\Controller\Pages;
 
+use App\Services\SelectFilesService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserPanelController extends AbstractController
 {
     #[Route('/user-panel',name:'app_user_panel')]
-    public function userPanel(): Response
+    public function userPanel(SelectFilesService $selectFilesService): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
@@ -19,10 +20,10 @@ class UserPanelController extends AbstractController
             return $this->redirectToRoute('app_homepage');
         }
             
-
+        
         
         return $this->render('pages/user_panel.html.twig',[
-
+            'files'=>$selectFilesService->selectAllFiles($user),
         ]);
     }
 
