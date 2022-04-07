@@ -25,13 +25,6 @@ $(function(){
             async: true,
             success: function(resp)
             {
-                /*
-                                        <div class="px-2">
-                            <i class="bi bi-file-text"></i>
-                            <p>{{file.name}}.{{file.extension}}</p>
-                            <p>Size: {{file.size}}Kb</p>
-                        </div>
-                */
                 var newFile = "<div class='px-2'>"
                 +"<i class='bi bi-file-text'></i>"
                 +"<p>"+resp["fileName"]+"."+resp["fileExtension"]+"</p>"
