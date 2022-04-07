@@ -19,6 +19,9 @@ Your file panel
                         <li>Text.txt</li>
                         <li>Test.pdf</li>
                     </ul>
+                    <div id="fileProperties">
+
+                    </div>
             </div>
 
             <div class="col-sm-9 bg-light text-black">
@@ -32,10 +35,9 @@ Your file panel
                         </form>
                     </div>
                     {% for file in files %}
-                        <div class="px-2">
+                        <div id="{{file.id}}" class="px-2 file">
                             <i class="bi bi-file-text"></i>
                             <p>{{file.name}}.{{file.extension}}</p>
-                            <p>Size: {{file.size}}Kb</p>
                         </div>
                     {% endfor %}
                 </div>
