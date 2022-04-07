@@ -25,10 +25,10 @@ class UploadFileController extends AbstractController
             $file->move($this->getParameter("file_path"),$fileName.".".$fileExtension);
 
             $user = $this->getUser();
-            $uploadFileService->uploadFile($user,$fileName,$fileExtension,$fileSize);
+            $fileId = $uploadFileService->uploadFile($user,$fileName,$fileExtension,$fileSize);
 
-            
-            $response = ["fileName"=>$fileName,"fileExtension"=>$fileExtension,"fileSize"=>$fileSize];
+
+            $response = ["fileId"=>$fileId,"fileName"=>$fileName,"fileExtension"=>$fileExtension,"fileSize"=>$fileSize];
             return new JsonResponse($response);
         }
         else
