@@ -22,7 +22,7 @@ class UploadFileController extends AbstractController
             $fileExtension = $file->getClientOriginalExtension(); 
             $fileName =  str_replace(".".$fileExtension,"",$file->getClientOriginalName());
 
-            $file->move($this->getParameter("file_path"),$fileName.$fileExtension);
+            $file->move($this->getParameter("file_path"),$fileName.".".$fileExtension);
 
             $user = $this->getUser();
             $uploadFileService->uploadFile($user,$fileName,$fileExtension,$fileSize);
