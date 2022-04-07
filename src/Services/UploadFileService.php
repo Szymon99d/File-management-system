@@ -15,7 +15,7 @@ class UploadFileService
         $this->entityManager = $entityManager;
     }
 
-    public function uploadFile(User $owner, string $name, string $extension, int $size): void
+    public function uploadFile(User $owner, string $name, string $extension, int $size): null|int
     {
         $newFile = new File;
         try{
@@ -26,6 +26,7 @@ class UploadFileService
             $newFile->setUploadDate(new \DateTime('now'));
             $this->entityManager->persist($newFile);
             $this->entityManager->flush();
+            return $newFile->getId();
         }
         catch(ORMException $e)
         {
