@@ -6,6 +6,7 @@ use App\Entity\File;
 use App\Services\SelectFilesService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,6 +48,22 @@ class UserPanelController extends AbstractController
             "owner"=>$file->getOwner()->getEmail()
             ];
             return new JsonResponse(json_encode($fileResp));
+        }
+        else
+            return $this->redirectToRoute('app_user_panel');
+    }
+    #[Route('/delete-file',name:'app_delete_file')]
+    public function deleteFile(Request $request, EntityManagerInterface $em, Filesystem $filesystem): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        if($request->isXmlHttpRequest())
+        {
+            $fileId = json_decode($request->request->get('id'));
+            $file = $em->getRepository(File::class)->find($fileId);
+            $filesystem->remove($this->getParameter("file_path")."/".$file->getName().".".$file->getExtension());
+            $em->remove($file);
+            $em->flush();
+            return new JsonResponse();
         }
         else
             return $this->redirectToRoute('app_user_panel');

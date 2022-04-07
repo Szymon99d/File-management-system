@@ -25,10 +25,9 @@ $(function(){
             async: true,
             success: function(resp)
             {
-                var newFile = "<div class='px-2 file'>"
+                var newFile = "<div id='"+resp['fileId']+"' class='px-2 file'>"
                 +"<i class='bi bi-file-text'></i>"
-                +"<p>"+resp["fileName"]+"."+resp["fileExtension"]+"</p>"
-                +"<p>Size: "+resp["fileSize"]+"Kb </p>";
+                +"<p>"+resp["fileName"]+"."+resp["fileExtension"]+"</p>";
                 $("#fileBrowser").append(newFile);
             },
             error: function(e){
@@ -37,7 +36,7 @@ $(function(){
         });
     });
 
-    $(".file").on("click",function(){
+    $(document).on("click",".file",function(){
         var fileId = $(this).attr("id");
         $.ajax({
             url: "/select-file",
@@ -55,10 +54,11 @@ $(function(){
                 +"<h5>Extension: "+resp['extension']+"</h5>"
                 +"<h5>Size: "+resp['size']+" KB</h5>";
                 $("#fileProperties").append(properties);
-                var fileMenu = "<div id="+resp['id']+"class='list-group'>"
+                var fileMenu = "<div class='list-group'>"
                 +"<a href='"+path+"' download='"+file+"'class='list-group-item list-group-item-action'>Download</a>"
                 +"<a href='#' class='list-group-item list-group-item-action'>Rename</a>"
-                +"<a href='#' class='list-group-item list-group-item-action'>Delete</a>"
+                +"<button id='deleteFile' class='list-group-item list-group-item-action'>Delete</button>"
+                +"<input id='fileId' type='number' value='"+resp['id']+"' class='visually-hidden'/>"
                 +"</div>";
                 $("#fileProperties").append(fileMenu);
 
@@ -68,5 +68,27 @@ $(function(){
                 console.log(e);
             }
         });
+    });
+
+    $(document).on('click',"#deleteFile",function(){
+        var conf = confirm("Are you sure you want to delete this file?");
+        if(conf)
+        {
+            var fileId = $("#fileId").val();
+            $.ajax({
+                url: "/delete-file",
+                method: "post",
+                data: {"id":fileId},
+                async: true,
+                success: function(resp)
+                {
+                    $("#fileProperties").empty();
+                    $("#"+fileId).remove();
+                },
+                error: function(e){
+                    console.log(e);
+                },
+            });
+        }
     });
 });
