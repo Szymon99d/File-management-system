@@ -36,4 +36,37 @@ $(function(){
             }
         });
     });
+
+    $(".file").on("click",function(){
+        var fileId = $(this).attr("id");
+        $.ajax({
+            url: "/select-file",
+            method: "post",
+            data: {"id":fileId},
+            async: true,
+            success: function(resp)
+            {
+                $("#fileProperties").empty();
+                resp = JSON.parse(resp);
+                var file = resp['name']+"."+resp['extension'];
+                var path = "files/"+file;
+                var properties = "<hr> <h4>File: "+resp['name']+"</h4>"
+                +"<h5>Owner: "+resp['owner']+" KB</h5>"
+                +"<h5>Extension: "+resp['extension']+"</h5>"
+                +"<h5>Size: "+resp['size']+" KB</h5>";
+                $("#fileProperties").append(properties);
+                var fileMenu = "<div id="+resp['id']+"class='list-group'>"
+                +"<a href='"+path+"' download='"+file+"'class='list-group-item list-group-item-action'>Download</a>"
+                +"<a href='#' class='list-group-item list-group-item-action'>Rename</a>"
+                +"<a href='#' class='list-group-item list-group-item-action'>Delete</a>"
+                +"</div>";
+                $("#fileProperties").append(fileMenu);
+
+            },
+            error: function(e)
+            {
+                console.log(e);
+            }
+        });
+    });
 });
