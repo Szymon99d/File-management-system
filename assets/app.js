@@ -49,14 +49,13 @@ $(function(){
                 resp = JSON.parse(resp);
                 var file = resp['name']+"."+resp['extension'];
                 var path = "files/"+file;
-                var properties = "<hr> <h4>File: "+resp['name']+"</h4>"
+                var properties = "<hr> <h5>File: <input id='fileName' type='text' class='input-file-name' value='"+resp['name']+"'/></h5>"
                 +"<h5>Owner: "+resp['owner']+" KB</h5>"
                 +"<h5>Extension: "+resp['extension']+"</h5>"
                 +"<h5>Size: "+resp['size']+" KB</h5>";
                 $("#fileProperties").append(properties);
                 var fileMenu = "<div class='list-group'>"
                 +"<a href='"+path+"' download='"+file+"'class='list-group-item list-group-item-action'>Download</a>"
-                +"<a href='#' class='list-group-item list-group-item-action'>Rename</a>"
                 +"<button id='deleteFile' class='list-group-item list-group-item-action'>Delete</button>"
                 +"<input id='fileId' type='number' value='"+resp['id']+"' class='visually-hidden'/>"
                 +"</div>";
@@ -89,6 +88,33 @@ $(function(){
                     console.log(e);
                 },
             });
+        }
+    });
+    $(document).on('keydown',"#fileName",function(e){
+        if(e.keyCode == 13)
+        {
+            if(!$("#fileName").val()=="")
+            {
+                var fileId = $("#fileId").val();
+                var fileName = $("#fileName").val();
+                $.ajax({
+                    url: "/rename-file",
+                    method: "post",
+                    data: {"id":fileId,"name":fileName},
+                    dataType: "json",
+                    async: true,
+                    success: function(resp)
+                    {
+                        console.log(resp);
+                        console.log("#"+fileId);
+                        $("#"+fileId).children("p").first().text(fileName+"."+resp);
+                    },
+                    error: function(e)
+                    {
+
+                    }
+                });
+            }
         }
     });
 });

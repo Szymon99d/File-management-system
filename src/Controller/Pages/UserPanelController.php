@@ -60,10 +60,31 @@ class UserPanelController extends AbstractController
         {
             $fileId = json_decode($request->request->get('id'));
             $file = $em->getRepository(File::class)->find($fileId);
-            $filesystem->remove($this->getParameter("file_path")."/".$file->getName().".".$file->getExtension());
+            $filePath = $this->getParameter("file_path")."/".$file->getName().".".$file->getExtension();
+            $filesystem->remove($filePath);
             $em->remove($file);
             $em->flush();
             return new JsonResponse();
+        }
+        else
+            return $this->redirectToRoute('app_user_panel');
+    }
+    #[Route('/rename-file',name:'app_rename_file')]
+    public function renameFile(Request $request, EntityManagerInterface $em, Filesystem $filesystem): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        if($request->isXmlHttpRequest())
+        {
+            $fileId = json_decode($request->request->get('id'));
+            $fileName = $request->request->get('name');
+            $file = $em->getRepository(File::class)->find($fileId);
+            $filePath = $this->getParameter("file_path")."/".$file->getName().".".$file->getExtension();
+            $file->setName($fileName);
+            $fileNewPath = $this->getParameter("file_path")."/".$file->getName().".".$file->getExtension();
+            $filesystem->rename($filePath,$fileNewPath,true);
+            $em->persist($file);
+            $em->flush();
+            return new JsonResponse($file->getExtension());
         }
         else
             return $this->redirectToRoute('app_user_panel');

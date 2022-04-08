@@ -25,3 +25,8 @@ input[type="file"]{
 .bi-file-text{
     font-size: 4em;
 }
+.input-file-name{
+    background: transparent;
+    outline: none;
+    border: none;
+}
