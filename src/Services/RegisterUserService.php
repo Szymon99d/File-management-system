@@ -24,14 +24,17 @@ class RegisterUserService
 
     public function registerUser(User $user, string $email, string $username, string $password): void
     {
+        $this->entityManager->getConnection()->beginTransaction();
         try{
             $user->setEmail($email);
             $user->setUsername($username);
             $user->setPassword($this->hashPassword($user,$password));
             $this->entityManager->persist($user);
             $this->entityManager->flush();
+            $this->entityManager->getConnection()->commit();
         }
         catch(ORMException $e){
+            $this->entityManager->getConnection()->rollBack();
             throw $e;
         }
         
