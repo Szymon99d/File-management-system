@@ -49,14 +49,15 @@ $(function(){
                 resp = JSON.parse(resp);
                 var file = resp['name']+"."+resp['extension'];
                 var path = "files/"+file;
-                var properties = "<hr> <h5>File: <input id='fileName' type='text' class='input-file-name' value='"+resp['name']+"'/></h5>"
+                var properties = "<button id='closeProp' class='btn btn-danger'>Close</button>"
+                +"<hr> <h5>File: <input id='fileName' type='text' class='input-file-name' value='"+resp['name']+"'/></h5>"
                 +"<h5>Owner: "+resp['owner']+" KB</h5>"
                 +"<h5>Extension: "+resp['extension']+"</h5>"
                 +"<h5>Size: "+resp['size']+" KB</h5>";
                 $("#fileProperties").append(properties);
-                var fileMenu = "<div class='list-group'>"
-                +"<a href='"+path+"' download='"+file+"'class='list-group-item list-group-item-action'>Download</a>"
-                +"<button id='deleteFile' class='list-group-item list-group-item-action'>Delete</button>"
+                var fileMenu = +"<div class='list-group'>"
+                +"<a id='downloadFile' href='"+path+"' download='"+file+"'class='list-group-item list-group-item-action list-group-item-primary'>Download</a>"
+                +"<button id='deleteFile' class='list-group-item list-group-item-action list-group-item-primary'>Delete</button>"
                 +"<input id='fileId' type='number' value='"+resp['id']+"' class='visually-hidden'/>"
                 +"</div>";
                 $("#fileProperties").append(fileMenu);
@@ -67,6 +68,10 @@ $(function(){
                 console.log(e);
             }
         });
+    });
+
+    $(document).on('click','$closeProp',function(){
+
     });
 
     $(document).on('click',"#deleteFile",function(){
@@ -108,12 +113,20 @@ $(function(){
                         console.log(resp);
                         console.log("#"+fileId);
                         $("#"+fileId).children("p").first().text(fileName+"."+resp);
+                        var newFile = fileName+"."+resp;
+                        var newPath = "files/"+newFile;
+                        $("#downloadFile").attr('download',newFile);
+                        $("#downloadFile").attr('href',newPath);
                     },
                     error: function(e)
                     {
 
                     }
                 });
+            }
+            else
+            {
+                alert("Invalid file name!");
             }
         }
     });
