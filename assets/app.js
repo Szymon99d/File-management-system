@@ -49,13 +49,13 @@ $(function(){
                 resp = JSON.parse(resp);
                 var file = resp['name']+"."+resp['extension'];
                 var path = "files/"+file;
-                var properties = "<button id='closeProp' class='btn btn-danger'>Close</button>"
-                +"<hr> <h5>File: <input id='fileName' type='text' class='input-file-name' value='"+resp['name']+"'/></h5>"
-                +"<h5>Owner: "+resp['owner']+" KB</h5>"
+                var properties = "<hr> <div class='d-flex justify-content-end'><button id='closeProp' class='btn btn-danger'>Close</button></div>"
+                +"<div><h5>File: <input id='fileName' type='text' class='input-file-name' value='"+resp['name']+"'/></h5>"
+                +"<h5>Owner: "+resp['owner']+"</h5>"
                 +"<h5>Extension: "+resp['extension']+"</h5>"
-                +"<h5>Size: "+resp['size']+" KB</h5>";
+                +"<h5>Size: "+resp['size']+" KB</h5></div>";
                 $("#fileProperties").append(properties);
-                var fileMenu = +"<div class='list-group'>"
+                var fileMenu = "<div class='list-group'>"
                 +"<a id='downloadFile' href='"+path+"' download='"+file+"'class='list-group-item list-group-item-action list-group-item-primary'>Download</a>"
                 +"<button id='deleteFile' class='list-group-item list-group-item-action list-group-item-primary'>Delete</button>"
                 +"<input id='fileId' type='number' value='"+resp['id']+"' class='visually-hidden'/>"
@@ -70,8 +70,8 @@ $(function(){
         });
     });
 
-    $(document).on('click','$closeProp',function(){
-
+    $(document).on('click','#closeProp',function(){
+        $("#fileProperties").empty();
     });
 
     $(document).on('click',"#deleteFile",function(){
