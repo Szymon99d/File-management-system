@@ -15,6 +15,11 @@ Fms homepage
                 <a href="{{path('app_resend_confirmation')}}">Click here to resend email confirmation</a>
             </div>
         {% endfor %}
+        {% for message in app.flashes('mailerError') %}
+            <div class="alert alert-danger w-100">
+                {{ message }}
+            </div>
+        {% endfor %}
         {% for message in app.flashes('success') %}
             <div class="alert alert-success w-100">
                 {{ message }}
