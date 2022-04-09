@@ -7,6 +7,7 @@ use App\Form\UserType;
 use App\Security\UserAuthenticator;
 use App\Services\ConfirmEmailService;
 use App\Services\RegisterUserService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,7 +21,8 @@ class HomepageController extends AbstractController
     RegisterUserService $registerUserService,
     ConfirmEmailService $ces,
     UserAuthenticator $userAuthenticator,
-    UserAuthenticatorInterface $userAuthenticatorInterface): Response
+    UserAuthenticatorInterface $userAuthenticatorInterface,
+    EntityManagerInterface $em): Response
     {
         $user = new User;
         $userForm = $this->createForm(UserType::class,$user);
@@ -30,10 +32,23 @@ class HomepageController extends AbstractController
             $email = $userForm->get('email')->getData();
             $username = $userForm->get('username')->getData();
             $plainpassword = $userForm->get('password')->getData();
-            $registerUserService->registerUser($user,$email,$username,$plainpassword);
-            $ces->confirmEmail($user);
-            $userAuthenticatorInterface->authenticateUser($user,$userAuthenticator,$request);
-            $this->redirectToRoute('app_homepage');
+
+            $em->getConnection()->beginTransaction();
+            $user = $registerUserService->registerUser($user,$email,$username,$plainpassword);
+            $em->persist($user);
+            $em->flush();
+            if($ces->confirmEmail($user))
+            {
+                $em->getConnection()->commit();
+                $userAuthenticatorInterface->authenticateUser($user,$userAuthenticator,$request);
+                return $this->redirectToRoute('app_user_panel');
+            }
+            else
+            {
+                $em->getConnection()->rollBack();
+                $this->addFlash('mailerError','Invalid email address!');
+                return $this->redirectToRoute('app_homepage');
+            }   
         }
         return $this->renderForm('pages/homepage.html.twig',[
             'form'=>$userForm,
