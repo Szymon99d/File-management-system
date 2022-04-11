@@ -15,7 +15,7 @@ class UploadFileService
         $this->entityManager = $entityManager;
     }
 
-    public function uploadFile(User $owner, string $name, string $extension, int $size): null|int
+    public function uploadFile(User $owner, string $name, string $extension, int $size, string $path): null|int
     {
         $newFile = new File;
         $this->entityManager->getConnection()->beginTransaction();
@@ -24,6 +24,7 @@ class UploadFileService
             $newFile->setName($name);
             $newFile->setExtension($extension);
             $newFile->setSize($size);
+            $newFile->setPath($path);
             $newFile->setUploadDate(new \DateTime('now'));
             $this->entityManager->persist($newFile);
             $this->entityManager->flush();

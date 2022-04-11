@@ -45,6 +45,7 @@ class UserPanelController extends AbstractController
             "name"=>$file->getName(),
             "extension"=>$file->getExtension(),
             "size"=>$file->getSize(),
+            "path"=>$file->getPath(),
             "owner"=>$file->getOwner()->getEmail()
             ];
             return new JsonResponse(json_encode($fileResp));
@@ -60,7 +61,8 @@ class UserPanelController extends AbstractController
         {
             $fileId = json_decode($request->request->get('id'));
             $file = $em->getRepository(File::class)->find($fileId);
-            $filePath = $this->getParameter("file_path")."/".$file->getName().".".$file->getExtension();
+            $user = $this->getUser();
+            $filePath = $this->getParameter('file_path').$user->getUsername()."/".$file->getName().".".$file->getExtension();
             $filesystem->remove($filePath);
             $em->remove($file);
             $em->flush();
@@ -78,9 +80,10 @@ class UserPanelController extends AbstractController
             $fileId = json_decode($request->request->get('id'));
             $fileName = $request->request->get('name');
             $file = $em->getRepository(File::class)->find($fileId);
-            $filePath = $this->getParameter("file_path")."/".$file->getName().".".$file->getExtension();
+            $user = $this->getUser();
+            $filePath = $this->getParameter('file_path').$user->getUsername()."/".$file->getName().".".$file->getExtension();
             $file->setName($fileName);
-            $fileNewPath = $this->getParameter("file_path")."/".$file->getName().".".$file->getExtension();
+            $fileNewPath = $this->getParameter('file_path').$user->getUsername()."/".$file->getName().".".$file->getExtension();
             $filesystem->rename($filePath,$fileNewPath,true);
             $em->persist($file);
             $em->flush();

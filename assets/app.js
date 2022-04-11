@@ -48,7 +48,6 @@ $(function(){
                 $("#fileProperties").empty();
                 resp = JSON.parse(resp);
                 var file = resp['name']+"."+resp['extension'];
-                var path = "files/"+file;
                 var properties = "<hr> <div class='d-flex justify-content-end'><button id='closeProp' class='btn btn-danger'>Close</button></div>"
                 +"<div><h5>File: <input id='fileName' type='text' class='input-file-name' value='"+resp['name']+"'/></h5>"
                 +"<h5>Owner: "+resp['owner']+"</h5>"
@@ -56,7 +55,7 @@ $(function(){
                 +"<h5>Size: "+resp['size']+" KB</h5></div>";
                 $("#fileProperties").append(properties);
                 var fileMenu = "<div class='list-group'>"
-                +"<a id='downloadFile' href='"+path+"' download='"+file+"'class='list-group-item list-group-item-action list-group-item-primary'>Download</a>"
+                +"<a id='downloadFile' href='"+resp['path']+"' download='"+file+"'class='list-group-item list-group-item-action list-group-item-primary'>Download</a>"
                 +"<button id='deleteFile' class='list-group-item list-group-item-action list-group-item-primary'>Delete</button>"
                 +"<input id='fileId' type='number' value='"+resp['id']+"' class='visually-hidden'/>"
                 +"</div>";

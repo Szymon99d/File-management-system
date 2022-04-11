@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\FileRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FileRepository::class)]
 class File
@@ -28,6 +29,10 @@ class File
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'files')]
     #[ORM\JoinColumn(nullable: false)]
     private $owner;
+
+    #[ORM\Column(type: 'text')]
+    #[Assert\Unique()]
+    private $path;
 
     public function getId(): ?int
     {
@@ -90,6 +95,18 @@ class File
     public function setOwner(?User $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
+
+    public function setPath(string $path): self
+    {
+        $this->path = $path;
 
         return $this;
     }
