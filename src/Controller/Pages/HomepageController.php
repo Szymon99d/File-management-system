@@ -41,7 +41,8 @@ class HomepageController extends AbstractController
             {
                 $em->getConnection()->commit();
                 $userAuthenticatorInterface->authenticateUser($user,$userAuthenticator,$request);
-                return $this->redirectToRoute('app_user_panel');
+                $this->addFlash('success','Successfully created an account! Please confirm your email address');
+                return $this->redirectToRoute('app_homepage');
             }
             else
             {
