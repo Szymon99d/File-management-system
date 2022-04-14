@@ -19,26 +19,27 @@ class UploadFileController extends AbstractController
         $this->denyAccessUnlessGranted("IS_AUTHENTICATED_FULLY");
         if($request->isXmlHttpRequest())
         {
-            $file = $request->files->get('fileUpload');
-            $fileSize = (int)(filesize($file)/1024);
-            $fileExtension = $file->getClientOriginalExtension(); 
-            $fileName =  str_replace(".".$fileExtension,"",$file->getClientOriginalName());
-            $user = $this->getUser();
-
-            $filePath = $this->getParameter('file_path').$user->getUsername()."/".$fileName.".".$fileExtension;
-            
-            if(!$filesystem->exists($filePath))
+            $file = $request->files->get('files');
+            $fileCount = count($file);
+            $responseFiles = array();
+            for($i=0; $i<$fileCount; $i++)
             {
-                $fileId = $uploadFileService->uploadFile($user,$fileName,$fileExtension,$fileSize,$filePath);
-                $file->move($this->getParameter('file_path').$user->getUsername(),$fileName.".".$fileExtension);
+                $fileSize = (int)(filesize($file[$i])/1024);
+                $fileExtension = $file[$i]->getClientOriginalExtension(); 
+                $fileName =  str_replace(".".$fileExtension,"",$file[$i]->getClientOriginalName());
+                $user = $this->getUser();
     
-                $response = ["fileId"=>$fileId,"fileName"=>$fileName,"fileExtension"=>$fileExtension,"fileSize"=>$fileSize];
-                return new JsonResponse($response);
+                $filePath = $this->getParameter('file_path').$user->getUsername()."/".$fileName.".".$fileExtension;
+                if(!$filesystem->exists($filePath))
+                {
+                    $fileId = $uploadFileService->uploadFile($user,$fileName,$fileExtension,$fileSize,$filePath);
+                    $file[$i]->move($this->getParameter('file_path').$user->getUsername(),$fileName.".".$fileExtension);
+        
+                    $response = ["fileId"=>$fileId,"fileName"=>$fileName,"fileExtension"=>$fileExtension,"fileSize"=>$fileSize];
+                    array_push($responseFiles,$response);
+                }
             }
-            else
-            {
-                return new JsonResponse(['status'=>false,'message'=>"File already exists!"],403);
-            }
+            return new JsonResponse(json_encode($responseFiles));
         }
         else
             return $this->redirectToRoute('app_user_panel');

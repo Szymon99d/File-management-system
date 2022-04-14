@@ -27,11 +27,11 @@ Your file panel
             <div class="col-sm-9 bg-light text-black">
                 <div id="fileBrowser" class="d-flex flex-row-start">
                     <div class="p-4">
-                        <form method="post" id="uploadForm">
+                        <form method="post" id="uploadForm" enctype="multipart/form-data">
                             <label for="fileUpload" class="btn btn-primary">
-                                Upload file
+                                Upload files
                             </label>
-                            <input id="fileUpload" type="file" name="fileUpload"/>
+                            <input id="fileUpload" type="file" name="fileUpload[]" multiple/>
                         </form>
                     </div>
                     {% for file in files %}

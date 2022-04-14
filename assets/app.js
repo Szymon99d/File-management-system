@@ -14,21 +14,33 @@ import $ from 'jquery';
 
 $(function(){
     $("#fileUpload").on('change',function(){
-        var uploadForm = $("#uploadForm");
-        var formData = new FormData(uploadForm[0]);
+        var formData = new FormData();
+        var countFiles = $("#fileUpload").prop("files").length;
+        console.log($("#fileUpload").prop("files")[0]);
+        console.log(countFiles);
+        for(var i=0; i<countFiles; i++){
+            
+            formData.append("files[]",$("#fileUpload").prop("files")[i]);
+            console.log($("#fileUpload").prop("files")[i]);
+        }
         $.ajax({
             url: "/upload-file",
             method: "post",
             data: formData,
+            dataType: 'json',
             processData: false,
             contentType: false,
             async: true,
             success: function(resp)
             {
-                var newFile = "<div id='"+resp['fileId']+"' class='px-2 file'>"
-                +"<i class='bi bi-file-text'></i>"
-                +"<p>"+resp["fileName"]+"."+resp["fileExtension"]+"</p>";
-                $("#fileBrowser").append(newFile);
+                var files = JSON.parse(resp);
+                for(var i=0; i<files.length; i++)
+                {
+                    var newFile = "<div id='"+files[i]['fileId']+"' class='px-2 file'>"
+                    +"<i class='bi bi-file-text'></i>"
+                    +"<p>"+files[i]["fileName"]+"."+files[i]["fileExtension"]+"</p>";
+                    $("#fileBrowser").append(newFile);
+                }
             },
             error: function(e){
                 console.log(e);
