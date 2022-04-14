@@ -38,8 +38,8 @@ class EmailController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
-        if(!$user->getIsVerified())
-            return $this->redirectToRoute('app_homepage');
+        if($user->getIsVerified())
+            return $this->redirectToRoute('app_user_panel');
         $ces->confirmEmail($user);
         $this->addFlash('success',"Email confirmation has been successfully sent!");
         return $this->redirectToRoute('app_homepage');
