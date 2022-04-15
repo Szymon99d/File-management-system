@@ -2,7 +2,12 @@
 .content{
     background-color: #88a8db;
     height: 800px;
+    max-height: 1000px;
     text-align: center;
+}
+.home-panel-block{
+    height: 300px;
+    max-height: 400px;
 }
 .form-block{
     background-color: #ffffffb6;
@@ -30,4 +35,7 @@ input[type="file"]{
     outline: none;
     border: none;
     border-bottom: 1px solid rgb(0, 185, 108);
+}
+.user-sidebar{
+    background-color: #a6c9ff;
 }
