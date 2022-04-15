@@ -27,13 +27,14 @@ class UploadFileController extends AbstractController
                 $fileSize = (int)(filesize($file[$i])/1024);
                 $fileExtension = $file[$i]->getClientOriginalExtension(); 
                 $fileName =  str_replace(".".$fileExtension,"",$file[$i]->getClientOriginalName());
+                $fileFullName = $file[$i]->getClientOriginalName();
                 $user = $this->getUser();
     
-                $filePath = $this->getParameter('file_path').$user->getUsername()."/".$fileName.".".$fileExtension;
+                $filePath = $this->getParameter('file_path').$user->getUsername()."/".$fileFullName;
                 if(!$filesystem->exists($filePath))
                 {
                     $fileId = $uploadFileService->uploadFile($user,$fileName,$fileExtension,$fileSize,$filePath);
-                    $file[$i]->move($this->getParameter('file_path').$user->getUsername(),$fileName.".".$fileExtension);
+                    $file[$i]->move($this->getParameter('file_path').$user->getUsername(),$fileFullName);
         
                     $response = ["fileId"=>$fileId,"fileName"=>$fileName,"fileExtension"=>$fileExtension,"fileSize"=>$fileSize];
                     array_push($responseFiles,$response);
