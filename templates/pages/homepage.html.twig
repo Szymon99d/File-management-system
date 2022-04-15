@@ -26,6 +26,7 @@ Fms homepage
             </div>
         {% endfor %}
         <h1 class="p-4">Upload files, share with others, keep them safe.</h1>
+        {% if not app.user %}
         <div class="container w-75">
             <div class="row justify-content-center">
                 <div class="form-block px-0 pb-2 col-sm-12 col-md-8 col-lg-6 col-xl-5">
@@ -43,6 +44,7 @@ Fms homepage
                 </div>
             </div>
         </div>
+        {% endif %}
 
     </div>
 
