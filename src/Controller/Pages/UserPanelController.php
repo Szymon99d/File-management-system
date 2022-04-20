@@ -81,13 +81,17 @@ class UserPanelController extends AbstractController
             $fileName = $request->request->get('name');
             $file = $em->getRepository(File::class)->find($fileId);
             $user = $this->getUser();
-            $filePath = $this->getParameter('file_path').$user->getUsername()."/".$file->getName().".".$file->getExtension();
+            
+            $fileExtenstion = empty($file->getExtension())?"":".".$file->getExtension();
+
+            $filePath = $this->getParameter('file_path').$user->getUsername()."/".$file->getName().$fileExtenstion;
             $file->setName($fileName);
-            $fileNewPath = $this->getParameter('file_path').$user->getUsername()."/".$file->getName().".".$file->getExtension();
+            $fileNewPath = $this->getParameter('file_path').$user->getUsername()."/".$file->getName().$fileExtenstion;
+            $file->setPath($fileNewPath);
             $filesystem->rename($filePath,$fileNewPath,true);
             $em->persist($file);
             $em->flush();
-            return new JsonResponse($file->getExtension());
+            return new JsonResponse($fileExtenstion);
         }
         else
             return $this->redirectToRoute('app_user_panel');

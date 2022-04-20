@@ -38,7 +38,7 @@ $(function(){
                 {
                     var newFile = "<div id='"+files[i]['fileId']+"' class='px-2 file'>"
                     +"<i class='bi bi-file-text'></i>"
-                    +"<p>"+files[i]["fileName"]+"."+files[i]["fileExtension"]+"</p>";
+                    +"<p>"+files[i]["fileName"]+"</p>";
                     $("#fileBrowser").append(newFile);
                 }
             },
@@ -60,7 +60,7 @@ $(function(){
                 $("#fileProperties").empty();
                 resp = JSON.parse(resp);
                 var file = resp['name']+"."+resp['extension'];
-                var properties = "<hr> <div class='d-flex justify-content-end'><button id='closeProp' class='btn btn-danger'>Close</button></div>"
+                var properties = " <div class='d-flex justify-content-end'><button id='closeProp' class='btn btn-danger'>Close</button></div>"
                 +"<div><h5>File: <input id='fileName' type='text' class='input-file-name' value='"+resp['name']+"'/></h5>"
                 +"<h5>Owner: "+resp['owner']+"</h5>"
                 +"<h5>Extension: "+resp['extension']+"</h5>"
@@ -123,8 +123,8 @@ $(function(){
                     {
                         console.log(resp);
                         console.log("#"+fileId);
-                        $("#"+fileId).children("p").first().text(fileName+"."+resp);
-                        var newFile = fileName+"."+resp;
+                        $("#"+fileId).children("p").first().text(fileName+resp);
+                        var newFile = fileName+resp;
                         var newPath = "files/"+newFile;
                         $("#downloadFile").attr('download',newFile);
                         $("#downloadFile").attr('href',newPath);

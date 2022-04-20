@@ -36,7 +36,7 @@ class UploadFileController extends AbstractController
                     $fileId = $uploadFileService->uploadFile($user,$fileName,$fileExtension,$fileSize,$filePath);
                     $file[$i]->move($this->getParameter('file_path').$user->getUsername(),$fileFullName);
         
-                    $response = ["fileId"=>$fileId,"fileName"=>$fileName,"fileExtension"=>$fileExtension,"fileSize"=>$fileSize];
+                    $response = ["fileId"=>$fileId,"fileName"=>$fileFullName,"fileSize"=>$fileSize];
                     array_push($responseFiles,$response);
                 }
             }

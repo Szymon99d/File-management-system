@@ -13,12 +13,6 @@ Your file panel
             <div class="col-sm-3 p-3 user-sidebar">
                     <h4>Welcome {{app.user.email}}!</h4>
                     <hr size="2">
-                    <h5>Recent uploads:</h5>
-                    <ul>
-                        <li>Image.png</li>
-                        <li>Text.txt</li>
-                        <li>Test.pdf</li>
-                    </ul>
                     <div id="fileProperties">
 
                     </div>
@@ -37,7 +31,13 @@ Your file panel
                     {% for file in files %}
                         <div id="{{file.id}}" class="px-2 file">
                             <i class="bi bi-file-text"></i>
-                            <p>{{file.name}}.{{file.extension}}</p>
+                            <p>{{file.name}}
+                            {% if file.extension %}
+                                .{{file.extension}}
+                            {% else %}
+                                {{file.extension}}
+                            {% endif %}
+                            </p>
                         </div>
                     {% endfor %}
                 </div>
