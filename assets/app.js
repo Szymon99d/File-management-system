@@ -59,7 +59,8 @@ $(function(){
             {
                 $("#fileProperties").empty();
                 resp = JSON.parse(resp);
-                var file = resp['name']+"."+resp['extension'];
+                console.log(resp['extension']);
+                var file = resp['name']+resp['extension'];
                 var properties = " <div class='d-flex justify-content-end'><button id='closeProp' class='btn btn-danger'>Close</button></div>"
                 +"<div><h5>File: <input id='fileName' type='text' class='input-file-name' value='"+resp['name']+"'/></h5>"
                 +"<h5>Owner: "+resp['owner']+"</h5>"
@@ -121,13 +122,15 @@ $(function(){
                     async: true,
                     success: function(resp)
                     {
-                        console.log(resp);
-                        console.log("#"+fileId);
-                        $("#"+fileId).children("p").first().text(fileName+resp);
-                        var newFile = fileName+resp;
-                        var newPath = "files/"+newFile;
+                        resp = JSON.parse(resp);
+                        var newFile = "";
+                        console.log(resp['fileExtension']);
+                        newFile = fileName+""+resp["fileExtension"];
+
+                        $("#"+fileId).children("p").first().text(newFile);
+                        
                         $("#downloadFile").attr('download',newFile);
-                        $("#downloadFile").attr('href',newPath);
+                        $("#downloadFile").attr('href',resp["filePath"]);
                     },
                     error: function(e)
                     {

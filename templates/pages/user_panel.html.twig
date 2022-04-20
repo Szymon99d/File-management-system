@@ -31,9 +31,7 @@ Your file panel
                     {% for file in files %}
                         <div id="{{file.id}}" class="px-2 file">
                             <i class="bi bi-file-text"></i>
-                            <p>{{file.name}}
-                            {% if file.extension %}
-                                .{{file.extension}}
+                            <p>{{file.name}}{% if file.extension %}.{{file.extension}}
                             {% else %}
                                 {{file.extension}}
                             {% endif %}
