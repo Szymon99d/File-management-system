@@ -41,13 +41,15 @@ class UserPanelController extends AbstractController
             $fileId = json_decode($request->request->get('id'));
             $file = $em->getRepository(File::class)->find($fileId);
             $fileExtenstion = empty($file->getExtension())?"":".".$file->getExtension();
+            $fileFullName = $file->getName().$fileExtenstion;
             $fileResp = [
             "id"=>$file->getId(),
             "name"=>$file->getName(),
             "extension"=>$fileExtenstion,
             "size"=>$file->getSize(),
             "path"=>$file->getPath(),
-            "owner"=>$file->getOwner()->getEmail()
+            "owner"=>$file->getOwner()->getEmail(),
+            "mimeType"=>mime_content_type($file->getPath())
             ];
             return new JsonResponse(json_encode($fileResp));
         }

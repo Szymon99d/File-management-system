@@ -12,6 +12,35 @@ import './styles/app.css';
 import './bootstrap';
 import $ from 'jquery';
 
+function clearSidebar()
+{
+    $("#fileProperties").empty();
+    $("#fileContent").empty();
+}
+
+function fileType(mimeType,path)
+{
+    var saveFileBtn = "<button class='btn btn-success w-100'>Save changes</button>";
+    var display = "<hr><h3>Preview</h3>";
+    if(mimeType.includes("image"))
+    {
+        display += "<div><img src='"+path+"' width='150' height='150' alt='image' /></div>";
+        $("#fileContent").append(display);
+    }
+    if(mimeType.includes("text"))
+    {
+        display += "<textarea id='fileText' class='w-100 py-2' rows='15'></textarea>";
+        $("#fileContent").append(display);
+        $("#fileText").load(path);
+        $("#fileContent").append(saveFileBtn);
+    }   
+    
+    
+    
+    
+        
+}
+
 $(function(){
     $("#fileUpload").on('change',function(){
         var formData = new FormData();
@@ -57,7 +86,7 @@ $(function(){
             async: true,
             success: function(resp)
             {
-                $("#fileProperties").empty();
+                clearSidebar();
                 resp = JSON.parse(resp);
                 console.log(resp['extension']);
                 var file = resp['name']+resp['extension'];
@@ -73,7 +102,7 @@ $(function(){
                 +"<input id='fileId' type='number' value='"+resp['id']+"' class='visually-hidden'/>"
                 +"</div>";
                 $("#fileProperties").append(fileMenu);
-
+                fileType(resp['mimeType'], resp['path']);
             },
             error: function(e)
             {
@@ -83,7 +112,7 @@ $(function(){
     });
 
     $(document).on('click','#closeProp',function(){
-        $("#fileProperties").empty();
+        clearSidebar();
     });
 
     $(document).on('click',"#deleteFile",function(){
