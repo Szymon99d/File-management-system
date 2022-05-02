@@ -39,3 +39,6 @@ input[type="file"]{
 .user-sidebar{
     background-color: #a6c9ff;
 }
+a:link{
+    text-decoration: none;
+}
