@@ -1,3 +1,6 @@
+# About
+Basic file management platform with user authentication & email confirmation. 
+
 # Requirements
 Symfony 6.0.0+ <br>
 Php 8.0.9+ <br>
