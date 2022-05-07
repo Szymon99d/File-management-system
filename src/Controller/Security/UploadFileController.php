@@ -33,11 +33,12 @@ class UploadFileController extends AbstractController
                 $filePath = $this->getParameter('file_path').$user->getUsername()."/".$fileFullName;
                 if(!$filesystem->exists($filePath))
                 {
-                    $fileId = $uploadFileService->uploadFile($user,$fileName,$fileExtension,$fileSize,$filePath);
-                    $file[$i]->move($this->getParameter('file_path').$user->getUsername(),$fileFullName);
-        
-                    $response = ["fileId"=>$fileId,"fileName"=>$fileFullName,"fileSize"=>$fileSize];
-                    array_push($responseFiles,$response);
+                    if($file[$i]->move($this->getParameter('file_path').$user->getUsername(),$fileFullName))
+                    {
+                        $fileId = $uploadFileService->uploadFile($user,$fileName,$fileExtension,$fileSize,$filePath);
+                        $response = ["fileId"=>$fileId,"fileName"=>$fileFullName,"fileSize"=>$fileSize];
+                        array_push($responseFiles,$response);
+                    }
                 }
             }
             return new JsonResponse(json_encode($responseFiles));
