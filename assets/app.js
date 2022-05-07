@@ -93,6 +93,7 @@ $(function(){
                 var properties = " <div class='d-flex justify-content-end'><button id='closeProp' class='btn btn-danger'>Close</button></div>"
                 +"<div><h5>File: <input id='fileName' type='text' class='input-file-name' value='"+resp['name']+"'/></h5>"
                 +"<h5>Owner: "+resp['owner']+"</h5>"
+                +"<h5>Upload date: "+resp['uploadDate']+"</h5>"
                 +"<h5>Extension: "+resp['extension']+"</h5>"
                 +"<h5>Size: "+resp['size']+" KB</h5></div>";
                 $("#fileProperties").append(properties);
