@@ -32,14 +32,14 @@ class UserPanelController extends AbstractController
         ]);
     }
 
-    #[Route('/select-file',name:'app_select_file')]
-    public function selectFile(Request $request, EntityManagerInterface $em): Response
+    #[Route('/select-file/{file}',name:'app_select_file')]
+    public function selectFile(Request $request, EntityManagerInterface $em, File $file): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if($request->isXmlHttpRequest())
         {
-            $fileId = json_decode($request->request->get('id'));
-            $file = $em->getRepository(File::class)->find($fileId);
+            // $fileId = json_decode($request->request->get('id'));
+            // $file = $em->getRepository(File::class)->find($fileId);
             $fileExtenstion = empty($file->getExtension())?"":".".$file->getExtension();
             $fileResp = [
             "id"=>$file->getId(),
@@ -56,16 +56,15 @@ class UserPanelController extends AbstractController
         else
             return $this->redirectToRoute('app_user_panel');
     }
-    #[Route('/delete-file',name:'app_delete_file')]
-    public function deleteFile(Request $request, EntityManagerInterface $em, Filesystem $filesystem): Response
+    #[Route('/delete-file/{file}',name:'app_delete_file')]
+    public function deleteFile(Request $request, EntityManagerInterface $em, Filesystem $filesystem, File $file): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if($request->isXmlHttpRequest())
         {
-            $fileId = json_decode($request->request->get('id'));
-            $file = $em->getRepository(File::class)->find($fileId);
-            $user = $this->getUser();
-            $filePath = $this->getParameter('file_path').$user->getUsername()."/".$file->getName().".".$file->getExtension();
+            // $fileId = json_decode($request->request->get('id'));
+            // $file = $em->getRepository(File::class)->find($fileId);
+            $filePath = $file->getPath();
             $filesystem->remove($filePath);
             $em->remove($file);
             $em->flush();
@@ -74,17 +73,15 @@ class UserPanelController extends AbstractController
         else
             return $this->redirectToRoute('app_user_panel');
     }
-    #[Route('/rename-file',name:'app_rename_file')]
-    public function renameFile(Request $request, EntityManagerInterface $em, Filesystem $filesystem): Response
+    #[Route('/rename-file/{file}',name:'app_rename_file')]
+    public function renameFile(Request $request, EntityManagerInterface $em, Filesystem $filesystem, File $file): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if($request->isXmlHttpRequest())
         {
-            $fileId = json_decode($request->request->get('id'));
+            // $fileId = json_decode($request->request->get('id'));
             $fileName = $request->request->get('name');
-            $file = $em->getRepository(File::class)->find($fileId);
             $user = $this->getUser();
-
 
             $fileExtenstion = empty($file->getExtension())?"":".".$file->getExtension();
 
@@ -97,6 +94,25 @@ class UserPanelController extends AbstractController
             $em->flush();
             $response = ["fileExtension"=>$fileExtenstion,"filePath"=>$fileNewPath];
             return new JsonResponse(json_encode($response));
+        }
+        else
+            return $this->redirectToRoute('app_user_panel');
+    }
+    #[Route('/save-changes/{file}',name:'app_save_changes_file')]
+    public function saveChangesFile(Request $request, File $file): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $data = $request->request->get('data');
+        if($request->isXmlHttpRequest())
+        {
+            if(file_exists($file->getPath()))
+            {
+                $fileHandle = fopen($file->getPath(), 'w');
+                fwrite($fileHandle, $data);
+                fclose($fileHandle);
+                
+            }
+            return new JsonResponse(gettype($data));
         }
         else
             return $this->redirectToRoute('app_user_panel');

@@ -20,28 +20,45 @@ function clearSidebar()
 
 function fileType(mimeType,path)
 {
-    var saveFileBtn = "<button class='btn btn-success w-100'>Save changes</button>";
+    var saveFileBtn = "<button id='saveChangesBtn' class='btn btn-success w-100'>Save changes</button>";
     var display = "<hr><h3>Preview</h3>";
     if(mimeType.includes("image"))
     {
         display += "<div><img src='"+path+"' width='150' height='150' alt='image' /></div>";
         $("#fileContent").append(display);
     }
-    if(mimeType.includes("text"))
+    else if(mimeType.includes("text") || mimeType === "application/x-empty" || mimeType === "application/octet-stream")
     {
         display += "<textarea id='fileText' class='w-100 py-2' rows='15'></textarea>";
         $("#fileContent").append(display);
         $("#fileText").load(path);
         $("#fileContent").append(saveFileBtn);
     }   
-    
-    
-    
-    
-        
+    else
+    {
+        var display = "<hr><h3>No preview</h3>";
+        $("#fileContent").append(display);
+    } 
 }
 
 $(function(){
+    $(document).on('click','#saveChangesBtn',function(){
+        var fileId = $("#fileId").val();
+        fileText = $("#fileText").val();
+        $.ajax({
+            url: "/save-changes/"+fileId+"",
+            method: "post",
+            data: {"data":fileText},
+            async: true,
+            success: function(resp){
+                console.log(resp);
+            },
+            error: function(e){
+
+            },
+        });
+
+    });
     $("#fileUpload").on('change',function(){
         var formData = new FormData();
         var countFiles = $("#fileUpload").prop("files").length;
@@ -80,15 +97,13 @@ $(function(){
     $(document).on("click",".file",function(){
         var fileId = $(this).attr("id");
         $.ajax({
-            url: "/select-file",
+            url: "/select-file/"+fileId+"",
             method: "post",
-            data: {"id":fileId},
             async: true,
             success: function(resp)
             {
                 clearSidebar();
                 resp = JSON.parse(resp);
-                console.log(resp['extension']);
                 var file = resp['name']+resp['extension'];
                 var properties = " <div class='d-flex justify-content-end'><button id='closeProp' class='btn btn-danger'>Close</button></div>"
                 +"<div><h5>File: <input id='fileName' type='text' class='input-file-name' value='"+resp['name']+"'/></h5>"
@@ -122,13 +137,12 @@ $(function(){
         {
             var fileId = $("#fileId").val();
             $.ajax({
-                url: "/delete-file",
+                url: "/delete-file/"+fileId+"",
                 method: "post",
-                data: {"id":fileId},
                 async: true,
                 success: function(resp)
                 {
-                    $("#fileProperties").empty();
+                    clearSidebar();
                     $("#"+fileId).remove();
                 },
                 error: function(e){
@@ -145,9 +159,9 @@ $(function(){
                 var fileId = $("#fileId").val();
                 var fileName = $("#fileName").val();
                 $.ajax({
-                    url: "/rename-file",
+                    url: "/rename-file/"+fileId+"",
                     method: "post",
-                    data: {"id":fileId,"name":fileName},
+                    data: {"name":fileName},
                     dataType: "json",
                     async: true,
                     success: function(resp)
