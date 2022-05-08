@@ -6,11 +6,14 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/monokai.css';
 import './styles/app.css';
 
 // start the Stimulus application
 import './bootstrap';
 import $ from 'jquery';
+import CodeMirror from 'codemirror';
 
 function clearSidebar()
 {
@@ -18,21 +21,29 @@ function clearSidebar()
     $("#fileContent").empty();
 }
 
-function fileType(mimeType,path)
+function fileType(mimeType,path,fileContents)
 {
     var saveFileBtn = "<button id='saveChangesBtn' class='btn btn-success w-100'>Save changes</button>";
     var display = "<hr><h3>Preview</h3>";
     if(mimeType.includes("image"))
     {
-        display += "<div><img src='"+path+"' width='150' height='150' alt='image' /></div>";
+        display += "<div><img src='"+path+"' class='img-fluid' alt='image' /></div>";
         $("#fileContent").append(display);
     }
     else if(mimeType.includes("text") || mimeType === "application/x-empty" || mimeType === "application/octet-stream")
     {
-        display += "<textarea id='fileText' class='w-100 py-2' rows='15'></textarea>";
+        display += "<textarea class='w-100 py-2 fileText' rows='15'></textarea>";
         $("#fileContent").append(display);
-        $("#fileText").load(path);
+        var textEditor = CodeMirror.fromTextArea($(".fileText")[0],{lineNumbers:true,theme:"monokai"});
+        textEditor.setValue(fileContents);
         $("#fileContent").append(saveFileBtn);
+        
+    }
+    else if(mimeType.includes("video"))
+    {
+        display +=  "<video width='150' height='150' controls>"
+        +"<source src='"+path+"' type='"+mimeType+"'></video>";
+        $("#fileContent").append(display); 
     }   
     else
     {
@@ -44,14 +55,14 @@ function fileType(mimeType,path)
 $(function(){
     $(document).on('click','#saveChangesBtn',function(){
         var fileId = $("#fileId").val();
-        fileText = $("#fileText").val();
+        var fileText = $(".CodeMirror")[0].CodeMirror.getValue();
         $.ajax({
             url: "/save-changes/"+fileId+"",
             method: "post",
             data: {"data":fileText},
             async: true,
             success: function(resp){
-                console.log(resp);
+                
             },
             error: function(e){
 
@@ -59,15 +70,13 @@ $(function(){
         });
 
     });
+
     $("#fileUpload").on('change',function(){
         var formData = new FormData();
         var countFiles = $("#fileUpload").prop("files").length;
-        console.log($("#fileUpload").prop("files")[0]);
-        console.log(countFiles);
         for(var i=0; i<countFiles; i++){
             
             formData.append("files[]",$("#fileUpload").prop("files")[i]);
-            console.log($("#fileUpload").prop("files")[i]);
         }
         $.ajax({
             url: "/upload-file",
@@ -105,12 +114,13 @@ $(function(){
                 clearSidebar();
                 resp = JSON.parse(resp);
                 var file = resp['name']+resp['extension'];
-                var properties = " <div class='d-flex justify-content-end'><button id='closeProp' class='btn btn-danger'>Close</button></div>"
+                var properties = " <div class='d-flex broder-2 justify-content-end'><button id='closeProp' class='btn btn-danger'>Close</button></div>"
                 +"<div><h5>File: <input id='fileName' type='text' class='input-file-name' value='"+resp['name']+"'/></h5>"
                 +"<h5>Owner: "+resp['owner']+"</h5>"
                 +"<h5>Upload date: "+resp['uploadDate']+"</h5>"
                 +"<h5>Extension: "+resp['extension']+"</h5>"
-                +"<h5>Size: "+resp['size']+" KB</h5></div>";
+                +"<h5>Size: "+resp['size']+" KB</h5></div>"
+                +"<h5>Mime type: "+resp['mimeType']+"</h5></div>";
                 $("#fileProperties").append(properties);
                 var fileMenu = "<div class='list-group'>"
                 +"<a id='downloadFile' href='"+resp['path']+"' download='"+file+"'class='list-group-item list-group-item-action list-group-item-primary'>Download</a>"
@@ -118,7 +128,7 @@ $(function(){
                 +"<input id='fileId' type='number' value='"+resp['id']+"' class='visually-hidden'/>"
                 +"</div>";
                 $("#fileProperties").append(fileMenu);
-                fileType(resp['mimeType'], resp['path']);
+                fileType(resp['mimeType'], resp['path'], resp['fileContents']);
             },
             error: function(e)
             {
@@ -168,7 +178,6 @@ $(function(){
                     {
                         resp = JSON.parse(resp);
                         var newFile = "";
-                        console.log(resp['fileExtension']);
                         newFile = fileName+""+resp["fileExtension"];
 
                         $("#"+fileId).children("p").first().text(newFile);

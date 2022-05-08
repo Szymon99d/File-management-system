@@ -38,9 +38,9 @@ class UserPanelController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if($request->isXmlHttpRequest())
         {
-            // $fileId = json_decode($request->request->get('id'));
-            // $file = $em->getRepository(File::class)->find($fileId);
             $fileExtenstion = empty($file->getExtension())?"":".".$file->getExtension();
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $fileMimeType = finfo_file($finfo,$file->getPath());
             $fileResp = [
             "id"=>$file->getId(),
             "name"=>$file->getName(),
@@ -49,8 +49,13 @@ class UserPanelController extends AbstractController
             "uploadDate"=>date_format($file->getUploadDate(),"Y-m-d H:i:s"),
             "path"=>$file->getPath(),
             "owner"=>$file->getOwner()->getEmail(),
-            "mimeType"=>mime_content_type($file->getPath())
+            "mimeType"=>$fileMimeType
             ];
+            if(str_contains($fileMimeType,"text"))
+            {
+                $fileContents = file_get_contents($file->getPath());
+                $fileResp += ["fileContents"=>$fileContents];
+            }
             return new JsonResponse(json_encode($fileResp));
         }
         else
@@ -62,8 +67,6 @@ class UserPanelController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if($request->isXmlHttpRequest())
         {
-            // $fileId = json_decode($request->request->get('id'));
-            // $file = $em->getRepository(File::class)->find($fileId);
             $filePath = $file->getPath();
             $filesystem->remove($filePath);
             $em->remove($file);
@@ -79,7 +82,6 @@ class UserPanelController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if($request->isXmlHttpRequest())
         {
-            // $fileId = json_decode($request->request->get('id'));
             $fileName = $request->request->get('name');
             $user = $this->getUser();
 
