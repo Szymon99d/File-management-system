@@ -37,8 +37,11 @@ input[type="file"]{
     border-bottom: 1px solid rgb(0, 185, 108);
 }
 .user-sidebar{
-    background-color: #a6c9ff;
+    background-color: #5c99f5;
 }
 a:link{
     text-decoration: none;
+}
+.CodeMirror{
+    text-align: left;
 }
