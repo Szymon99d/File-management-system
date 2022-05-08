@@ -1,5 +1,6 @@
 # About
-Basic file management platform with user authentication & email confirmation. 
+Basic file management platform with user authentication & email confirmation. <br>
+Upload multiple files, edit and view text files, view images and videos.
 
 # Requirements
 Symfony 6.0.0+ <br>
