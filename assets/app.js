@@ -41,7 +41,7 @@ function fileType(mimeType,path,fileContents)
     }
     else if(mimeType.includes("video"))
     {
-        display +=  "<video width='150' height='150' controls>"
+        display +=  "<div class='ratio ratio-1x1'><video controls>"
         +"<source src='"+path+"' type='"+mimeType+"'></video>";
         $("#fileContent").append(display); 
     }   
@@ -119,8 +119,7 @@ $(function(){
                 +"<h5>Owner: "+resp['owner']+"</h5>"
                 +"<h5>Upload date: "+resp['uploadDate']+"</h5>"
                 +"<h5>Extension: "+resp['extension']+"</h5>"
-                +"<h5>Size: "+resp['size']+" KB</h5></div>"
-                +"<h5>Mime type: "+resp['mimeType']+"</h5></div>";
+                +"<h5>Size: "+resp['size']+" KB</h5></div>";
                 $("#fileProperties").append(properties);
                 var fileMenu = "<div class='list-group'>"
                 +"<a id='downloadFile' href='"+resp['path']+"' download='"+file+"'class='list-group-item list-group-item-action list-group-item-primary'>Download</a>"
