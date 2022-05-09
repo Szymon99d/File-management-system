@@ -30,7 +30,7 @@ function fileType(mimeType,path,fileContents)
         display += "<div><img src='"+path+"' class='img-fluid' alt='image' /></div>";
         $("#fileContent").append(display);
     }
-    else if(mimeType.includes("text") || mimeType === "application/x-empty" || mimeType === "application/octet-stream")
+    else if(mimeType.includes("text") || mimeType === "application/x-empty")
     {
         display += "<textarea class='w-100 py-2 fileText' rows='15'></textarea>";
         $("#fileContent").append(display);
@@ -39,9 +39,14 @@ function fileType(mimeType,path,fileContents)
         $("#fileContent").append(saveFileBtn);
         
     }
+    else if(mimeType.includes("pdf"))
+    {
+        display += "<embed src='"+path+"'/>";
+        $("#fileContent").append(display);
+    }
     else if(mimeType.includes("video"))
     {
-        display +=  "<div class='ratio ratio-1x1'><video controls>"
+        display +=  "<div class='video-fluid ratio ratio-1x1'><video controls>"
         +"<source src='"+path+"' type='"+mimeType+"'></video>";
         $("#fileContent").append(display); 
     }   
@@ -93,7 +98,7 @@ $(function(){
                 {
                     var newFile = "<div id='"+files[i]['fileId']+"' class='px-2 file'>"
                     +"<i class='bi bi-file-text'></i>"
-                    +"<p>"+files[i]["fileName"]+"</p>";
+                    +"<p class='px-1 file-name'>"+files[i]["fileName"]+"</p>";
                     $("#fileBrowser").append(newFile);
                 }
             },

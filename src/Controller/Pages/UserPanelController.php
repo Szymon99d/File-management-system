@@ -24,9 +24,6 @@ class UserPanelController extends AbstractController
             $this->addFlash('EmailConfWarn','Before you access your file panel, please confirm your email address.');
             return $this->redirectToRoute('app_homepage');
         }
-            
-        
-        
         return $this->render('pages/user_panel.html.twig',[
             'files'=>$selectFilesService->selectAllFiles($user),
         ]);
@@ -55,6 +52,10 @@ class UserPanelController extends AbstractController
             {
                 $fileContents = file_get_contents($file->getPath());
                 $fileResp += ["fileContents"=>$fileContents];
+            }
+            else
+            {
+                $fileResp += ["fileContents"=>""];
             }
             return new JsonResponse(json_encode($fileResp));
         }
