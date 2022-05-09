@@ -14,7 +14,7 @@ class SecurityControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
 
         $form = $crawler->selectButton("Sign in")->form();
-        $form['email']->setValue("TestUser@gmail.com");
+        $form['email']->setValue("TestUser@test.com");
         $form['password']->setValue("TestPassword");
         $crawler = $client->submit($form);
 
