@@ -34,7 +34,7 @@ input[type="file"]{
     background: transparent;
     outline: none;
     border: none;
-    border-bottom: 1px solid rgb(0, 185, 108);
+    border-bottom: 1px solid rgb(0, 66, 158);
 }
 .user-sidebar{
     background-color: #5c99f5;
@@ -44,4 +44,14 @@ a:link{
 }
 .CodeMirror{
     text-align: left;
+}
+.img-fluid, .video-fluid{
+    max-width: 400px;
+    max-height: 400px;
+}
+.file{
+    max-width: 120px;
+}
+.file-name{
+    word-wrap: break-word;
 }

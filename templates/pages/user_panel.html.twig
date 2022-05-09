@@ -32,9 +32,9 @@ Your file panel
                         </form>
                     </div>
                     {% for file in files %}
-                        <div id="{{file.id}}" class="px-2 file">
+                        <div id="{{file.id}}" class="mx-2 file">
                             <i class="bi bi-file-text"></i>
-                            <p>{{file.name}}{% if file.extension %}.{{file.extension}}
+                            <p class="px-1 file-name">{{file.name}}{% if file.extension %}.{{file.extension}}
                             {% else %}
                                 {{file.extension}}
                             {% endif %}
