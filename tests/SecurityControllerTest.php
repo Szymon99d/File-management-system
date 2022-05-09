@@ -27,7 +27,7 @@ class SecurityControllerTest extends WebTestCase
         $this->assertEquals(1,$crawler->filter("a:contains('Logout')")->count());
         $this->assertEquals(1,$crawler->filter("a:contains('Your file panel')")->count());
         $this->assertEquals(1,$crawler->filter("label:contains('Upload file')")->count());
-        $this->assertEquals(1,$crawler->filter("h4:contains('Welcome TestUser@gmail.com!')")->count());
+        $this->assertEquals(1,$crawler->filter("h4:contains('Welcome TestUser@test.com!')")->count());
 
 
         
