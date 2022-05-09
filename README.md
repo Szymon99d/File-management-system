@@ -16,9 +16,8 @@ Change your DATABASE_URL in .env.local file if needed.
 3. Run `composer install`
 4. Run `npm install`
 5. Run `bin/console doctrine:database:create --if-not-exists` to create database
-6. Run `bin/console doctrine:migrations:diff` to create migration file
-7. Run `bin/console doctrine:migrations:migrate` to execute migration
-8. Run `npm run build`
+6. Run `bin/console doctrine:schema:create` to create database schema
+7. Run `npm run build`
 
 Start your local server: `symfony serve` and go to localhost:8000 or configure a web server like Apache
 
