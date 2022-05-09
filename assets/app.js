@@ -96,7 +96,7 @@ $(function(){
                 var files = JSON.parse(resp);
                 for(var i=0; i<files.length; i++)
                 {
-                    var newFile = "<div id='"+files[i]['fileId']+"' class='px-2 file'>"
+                    var newFile = "<div id='"+files[i]['fileId']+"' class='mx-2 file'>"
                     +"<i class='bi bi-file-text'></i>"
                     +"<p class='px-1 file-name'>"+files[i]["fileName"]+"</p>";
                     $("#fileBrowser").append(newFile);
