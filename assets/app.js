@@ -24,6 +24,7 @@ function calcFileSize(fileSize,power=1)
         fileSize/=1024;
         power++;
     }
+    fileSize = Math.round(fileSize* 100) / 100;
     return fileSize+" "+prefixes[power];
 }
 
