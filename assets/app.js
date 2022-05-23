@@ -15,6 +15,19 @@ import './bootstrap';
 import $ from 'jquery';
 import CodeMirror from 'codemirror';
 
+
+function calcFileSize(fileSize,power=1)
+{
+    var prefixes = ['B','KB','MB','GB','TB'];
+    while(fileSize>=1024)
+    {
+        fileSize/=1024;
+        power++;
+    }
+    return fileSize+" "+prefixes[power];
+}
+
+
 function clearSidebar()
 {
     $("#fileProperties").empty();
@@ -119,12 +132,13 @@ $(function(){
                 clearSidebar();
                 resp = JSON.parse(resp);
                 var file = resp['name']+resp['extension'];
+                var size = calcFileSize(resp['size']);
                 var properties = " <div class='d-flex broder-2 justify-content-end'><button id='closeProp' class='btn btn-danger'>Close</button></div>"
                 +"<div><h5>File: <input id='fileName' type='text' class='input-file-name' value='"+resp['name']+"'/></h5>"
                 +"<h5>Owner: "+resp['owner']+"</h5>"
                 +"<h5>Upload date: "+resp['uploadDate']+"</h5>"
                 +"<h5>Extension: "+resp['extension']+"</h5>"
-                +"<h5>Size: "+resp['size']+" KB</h5></div>";
+                +"<h5>Size: "+size+"</h5></div>";
                 $("#fileProperties").append(properties);
                 var fileMenu = "<div class='list-group'>"
                 +"<a id='downloadFile' href='"+resp['path']+"' download='"+file+"'class='list-group-item list-group-item-action list-group-item-primary'>Download</a>"
