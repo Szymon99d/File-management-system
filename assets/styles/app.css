@@ -46,10 +46,11 @@ a:link{
     text-align: left;
 }
 .img-fluid, .video-fluid{
-    max-width: 400px;
-    max-height: 400px;
+    max-width: 350px;
+    max-height: 350px;
 }
 .file{
+    width: 100px;
     max-width: 120px;
 }
 .file-name{
