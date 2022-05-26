@@ -53,6 +53,9 @@ a:link{
     width: 100px;
     max-width: 120px;
 }
+.file-list, .file{
+    cursor: pointer;
+}
 .file-name{
     word-wrap: break-word;
 }
