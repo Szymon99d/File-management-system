@@ -220,6 +220,7 @@ $(function(){
     $("#displayListBtn").on('click',function(){
         if($("#fileBrowser").hasClass("d-flex"))
         {
+            $(this).text("Display files in grid");
             $("#fileBrowser").removeClass("d-flex flex-row-start flex-wrap").addClass("list-group");
             $('.file').each(function() {
                 $(this).children(".bi-file-text").remove();
@@ -229,6 +230,7 @@ $(function(){
         }         
         else
         {
+            $(this).text("Display files in list");
             $("#fileBrowser").removeClass("list-group").addClass("d-flex flex-row-start flex-wrap");
             $('.file-list').each(function() {
                 $(this).prepend("<i class='bi bi-file-text'></i>");
