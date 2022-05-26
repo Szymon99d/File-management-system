@@ -122,7 +122,7 @@ $(function(){
         });
     });
 
-    $(document).on("click",".file",function(){
+    $(document).on("click",".file-list, .file",function(){
         var fileId = $(this).attr("id");
         $.ajax({
             url: "/select-file/"+fileId+"",
@@ -216,4 +216,27 @@ $(function(){
             }
         }
     });
+
+    $("#displayListBtn").on('click',function(){
+        if($("#fileBrowser").hasClass("d-flex"))
+        {
+            $("#fileBrowser").removeClass("d-flex flex-row-start flex-wrap").addClass("list-group");
+            $('.file').each(function() {
+                $(this).children(".bi-file-text").remove();
+                $(this).addClass("list-group-item list-group-item-info file-list");
+                $(this).removeClass("file");
+            });
+        }         
+        else
+        {
+            $("#fileBrowser").removeClass("list-group").addClass("d-flex flex-row-start flex-wrap");
+            $('.file-list').each(function() {
+                $(this).prepend("<i class='bi bi-file-text'></i>");
+                $(this).addClass("file");
+                $(this).removeClass("list-group-item list-group-item-info file-list");
+            });
+        }
+            
+    });
+
 });

@@ -30,7 +30,7 @@ class UserPanelController extends AbstractController
     }
 
     #[Route('/select-file/{file}',name:'app_select_file')]
-    public function selectFile(Request $request, EntityManagerInterface $em, File $file): Response
+    public function selectFile(Request $request, File $file): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if($request->isXmlHttpRequest())
