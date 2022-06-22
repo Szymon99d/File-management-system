@@ -22,8 +22,15 @@ Your file panel
             </div>
 
             <div class="col-sm-9 bg-light text-black p-0">
-                <div class="container-fluid p-1" style="height:50px;">
-                    <button id="displayListBtn" class="btn btn-primary">Display files in list</button>
+                <div id="FilesToolbar" class="container-fluid p-1" style="height:50px;">
+                    <button id="displayListBtn" class="btn btn-primary mx-2">
+                        <i class="bi bi-list-ul"></i>
+                        Display files in list
+                    </button>
+                    <button id="deleteAllBtn" class="btn btn-danger mx-2">
+                        <i class="bi bi-trash-fill"></i>
+                        Delete all files
+                    </button>
                 </div>
                 
                 <div id="fileBrowser" class="d-flex flex-row-start flex-wrap">

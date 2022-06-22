@@ -59,3 +59,7 @@ a:link{
 .file-name{
     word-wrap: break-word;
 }
+#FilesToolbar{
+    text-align: left;
+    background-color: #4b7dc8;
+}
