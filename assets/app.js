@@ -242,4 +242,23 @@ $(function(){
             
     });
 
+    $("#deleteAllBtn").on('click',function(){
+        if(confirm("Are you sure you want to delete all files?"))
+        {
+            $.ajax({
+                url: "/delete-all-files",
+                method: 'post',
+                async: true,
+                success: function()
+                {
+                    alert("All files have been successfully deleted!");
+                    window.location.reload(true);
+                },
+                error: function(){
+                    alert("An error occurred while trying to delete all files!");
+                }            
+            })
+        }
+    });
+
 });

@@ -77,6 +77,24 @@ class UserPanelController extends AbstractController
         else
             return $this->redirectToRoute('app_user_panel');
     }
+    #[Route('/delete-all-files',name:'app_delete_all_files')]
+    public function deleteAllFiles(Request $request, EntityManagerInterface $em, Filesystem $filesystem, SelectFilesService $sfs): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        if($request->isXmlHttpRequest())
+        {
+            $ownerFiles = $sfs->selectAllFiles($this->getUser());
+            foreach($ownerFiles as $file){
+                $filePath = $file->getPath();
+                $filesystem->remove($filePath);
+                $em->remove($file);
+                $em->flush();
+            }
+            return new JsonResponse();
+        }
+        else
+            return $this->redirectToRoute('app_user_panel');
+    }
     #[Route('/rename-file/{file}',name:'app_rename_file')]
     public function renameFile(Request $request, EntityManagerInterface $em, Filesystem $filesystem, File $file): Response
     {
